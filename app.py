@@ -35,12 +35,12 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class LoginForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+    uname = StringField('username', validators=[InputRequired(),Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     phone = StringField('phone')
 
 class RegisterForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+    uname = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     phone = StringField('phone')
 
@@ -54,7 +54,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(username=form.uname.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
@@ -76,7 +76,7 @@ def register():
     if form.validate_on_submit():
         try:
             hashed_password = generate_password_hash(form.password.data, method='sha256')
-            new_user = User(username=form.username.data, password=hashed_password, phone=form.phone.data)
+            new_user = User(username=form.uname.data, password=hashed_password, phone=form.phone.data)
             db.session.add(new_user)
             db.session.commit()
 
