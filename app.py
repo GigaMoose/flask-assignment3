@@ -36,12 +36,12 @@ def load_user(user_id):
 
 class LoginForm(FlaskForm):
     uname = StringField('username', validators=[InputRequired(),Length(min=4, max=15)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     phone = StringField('phone')
 
 class RegisterForm(FlaskForm):
     uname = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     phone = StringField('phone')
 
 
@@ -56,8 +56,9 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.uname.data).first()
         if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
+            if check_password_hash(user.password, form.pword.data):
+                login_user(user)
+
                 return redirect(url_for('spell_check'))
 
         return '<h1>Invalid username or password</h1>'
