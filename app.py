@@ -2,7 +2,7 @@
 # Please check reference.txt in GitHub for various tutorials that helped me complete this assignment
 
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField
