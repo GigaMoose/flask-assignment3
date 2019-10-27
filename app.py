@@ -62,14 +62,17 @@ def login():
         user = User.query.filter_by(username=form.uname.data).first()
         if user:
             if check_password_hash(user.password, form.pword.data):
-                login_user(user)
+                if (int((user.phone)) != form.phone.data):
+                    outcome = "Two-factor failure"
+                    return render_template('login.html', form=form, outcome=outcome)
+                elif (int((user.phone)) == form.phone.data):
+                    outcome = "success"
+                    return render_template('login.html', form=form, outcome=outcome)
 
-                return redirect(url_for('spell_check'))
-
-        return '<h1>Invalid username or password</h1>'
+        #return '<h1>Invalid username or password or phone</h1>'
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
-
-    return render_template('login.html', form=form)
+        outcome = "incorrect user"
+    return render_template('login.html', form=form, outcome=outcome)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
