@@ -5,7 +5,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, IntegerField
+from wtforms import StringField, PasswordField, IntegerField, TextAreaFields
 from wtforms.validators import InputRequired, Email, Length, Optional, NumberRange
 from flask_sqlalchemy  import SQLAlchemy
 from sqlalchemy import exc
@@ -45,10 +45,9 @@ class RegisterForm(FlaskForm):
     phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
 
 class SpellcheckForm(FlaskForm):
-    uname = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
-
+    inputtext = TextAreaFields('Input Text', validators=[InputRequired()], id='inputtext')
+    textout = TextAreaFields('Output Text', id='textout')
+    misspelled = TextAreaFields('Misspelled Text', id='misspelled')
 
 @app.route('/')
 def index():
@@ -60,6 +59,7 @@ def login():
     outcome = ''
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.uname.data).first()
+        login_user(user)
         if user:
             if check_password_hash(user.password, form.pword.data):
                 if (int((user.phone)) != form.phone.data):
@@ -68,6 +68,7 @@ def login():
                 elif (int((user.phone)) == form.phone.data):
                     outcome = "success"
                     return render_template('login.html', form=form, outcome=outcome)
+                    login_user(user)
             else:
                 outcome = "incorrect password"
                 return render_template('login.html', form=form, outcome=outcome)
@@ -109,13 +110,14 @@ def register():
 @app.route('/spell_check', methods=['GET', 'POST'])
 @login_required
 def spell_check():
-    if current_user.is_authenticated:
-        #form = SpellcheckForm()
-        outcome = 'success'
-        return render_template('spellcheck2.html', name=current_user.username, outcome=outcome)
+    #if current_user.is_authenticated:
+
+    form = SpellcheckForm()
+    outcome = 'success'
+    return render_template('spellcheck2.html', name=current_user.username, outcome=outcome)
 
 @app.route('/logout')
-@login_required
+#@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
