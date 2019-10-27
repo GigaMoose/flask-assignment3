@@ -57,7 +57,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
+    outcome = ''
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.uname.data).first()
         if user:
@@ -68,10 +68,15 @@ def login():
                 elif (int((user.phone)) == form.phone.data):
                     outcome = "success"
                     return render_template('login.html', form=form, outcome=outcome)
+            else:
+                outcome = "incorrect password"
+                return render_template('login.html', form=form, outcome=outcome)
+        if not user:
+            outcome = "incorrect user"
+            return render_template('login.html', form=form, outcome=outcome)
 
         #return '<h1>Invalid username or password or phone</h1>'
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
-    outcome = "incorrect user"
     return render_template('login.html', form=form, outcome=outcome)
 
 @app.route('/register', methods=['GET', 'POST'])
