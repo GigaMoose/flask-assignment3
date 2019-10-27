@@ -71,7 +71,7 @@ def login():
 
         #return '<h1>Invalid username or password or phone</h1>'
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
-        outcome = "incorrect user"
+    outcome = "incorrect user"
     return render_template('login.html', form=form, outcome=outcome)
 
 @app.route('/register', methods=['GET', 'POST'])
