@@ -5,8 +5,8 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField
-from wtforms.validators import InputRequired, Email, Length
+from wtforms import StringField, PasswordField, IntegerField
+from wtforms.validators import InputRequired, Email, Length, Optional, NumberRange
 from flask_sqlalchemy  import SQLAlchemy
 from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -37,12 +37,12 @@ def load_user(user_id):
 class LoginForm(FlaskForm):
     uname = StringField('username', validators=[InputRequired(),Length(min=4, max=15)])
     pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = StringField('phone')
+    phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
 
 class RegisterForm(FlaskForm):
     uname = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = StringField('phone')
+    phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
 
 
 @app.route('/')
@@ -76,7 +76,7 @@ def register():
 
     if form.validate_on_submit():
         try:
-            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            hashed_password = generate_password_hash(form.pword.data, method='sha256')
             new_user = User(username=form.uname.data, password=hashed_password, phone=form.phone.data)
             db.session.add(new_user)
             db.session.commit()
