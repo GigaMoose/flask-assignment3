@@ -20,6 +20,10 @@ Register
     {{ wtf.form_field(form.password) }}
     {{ wtf.form_field(form.phone) }}
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+
+    {% if outcome %}
+		<p id="success">{{ outcome }}</p>
+		{% endif %}
   </form>
 
 </div> <!-- /container -->

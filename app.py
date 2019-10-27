@@ -8,6 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Email, Length
 from flask_sqlalchemy  import SQLAlchemy
+from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import phonenumbers
@@ -36,12 +37,12 @@ def load_user(user_id):
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = StringField('phone' validators=[Length(max=11)])
+    phone = StringField('phone')
 
 class RegisterForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = StringField('phone' validators=[Length(max=11)])
+    phone = StringField('phone')
 
 
 @app.route('/')
@@ -50,36 +51,49 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm()
 
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('index'))
+        if form.validate_on_submit():
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                if check_password_hash(user.password, form.password.data):
+                    login_user(user, remember=form.remember.data)
+                    return redirect(url_for('spell_check'))
 
-        return '<h1>Invalid username or password</h1>'
-        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+            return '<h1>Invalid username or password</h1>'
+            #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
-    return render_template('login.html', form=form)
+        return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    outcome = ''
+    if current_user.is_authenticated:
+        return redirect(url_for('spell_check'))
+
     form = RegisterForm()
 
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, password=hashed_password, phone=form.phone.data)
-        db.session.add(new_user)
-        db.session.commit()
+        try:
+            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            new_user = User(username=form.username.data, password=hashed_password, phone=form.phone.data)
+            db.session.add(new_user)
+            db.session.commit()
 
-        return '<h1>New user has been created!</h1>'
-        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
-
+            #return '<p id="success">'
+            #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
+            #return '<p id="failure">'
+            outcome = 'success'
+            return render_template('register.html', form=form, outcome=outcome)
+        except exc.IntegrityError:
+            db.session.rollback()
+            outcome = 'failure'
+            return render_template('register.html', form=form, outcome=outcome)
+    
     return render_template('register.html', form=form)
 
-@app.route('/dashboard')
+@app.route('/spell_check')
 @login_required
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
