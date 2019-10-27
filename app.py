@@ -51,20 +51,19 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        form = LoginForm()
+    form = LoginForm()
 
-        if form.validate_on_submit():
-            user = User.query.filter_by(username=form.username.data).first()
-            if user:
-                if check_password_hash(user.password, form.password.data):
-                    login_user(user, remember=form.remember.data)
-                    return redirect(url_for('spell_check'))
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('spell_check'))
 
-            return '<h1>Invalid username or password</h1>'
-            #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+        return '<h1>Invalid username or password</h1>'
+        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
-        return render_template('login.html', form=form)
+    return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
