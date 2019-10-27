@@ -44,6 +44,11 @@ class RegisterForm(FlaskForm):
     pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
 
+class SpellcheckForm(FlaskForm):
+    uname = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+    pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
+
 
 @app.route('/')
 def index():
@@ -93,10 +98,13 @@ def register():
     
     return render_template('register.html', form=form)
 
-@app.route('/spell_check')
+@app.route('/spell_check', methods=['GET', 'POST'])
 @login_required
-def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
+def spell_check():
+    if current_user.is_authenticated:
+        #form = SpellcheckForm()
+        outcome = 'success'
+        return render_template('spellcheck2.html', name=current_user.username, outcome=outcome)
 
 @app.route('/logout')
 @login_required

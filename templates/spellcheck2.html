@@ -1,0 +1,26 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Spellcheck
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='spellcheck.css')}}">
+{% endblock %}
+
+{% block content %}
+{% if outcome %}
+  <p id="success">{{ outcome }}</p>
+{% endif %}
+<p>SPELLCHECK TEST PAGE</p>
+    <div class="container">
+
+      <form class="form-spellcheck" method="POST" action="/spell_check">
+        <h2 class="form-spellcheck-heading">Please enter your input</h2>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Compute</button>
+      </form>
+
+    </div> <!-- /container -->
+{% endblock %}
