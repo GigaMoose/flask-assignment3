@@ -59,7 +59,7 @@ def login():
     outcome = ''
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.uname.data).first()
-        login_user(user)
+        #login_user(user)
         if user:
             if check_password_hash(user.password, form.pword.data):
                 if (int((user.phone)) != form.phone.data):
