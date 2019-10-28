@@ -67,7 +67,7 @@ def login():
                     return render_template('login.html', form=form, outcome=outcome)
                 elif (int((user.phone)) == form.phone.data):
                     outcome = 'success'
-                    login_user(user)
+                    #login_user(user)
                     return render_template('login.html', form=form, outcome=outcome)
             else:
                 outcome = 'incorrect password'
