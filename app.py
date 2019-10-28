@@ -113,6 +113,13 @@ def spell_check():
     if current_user.is_authenticated:
         form = SpellcheckForm()
 
+        if form.validate_on_submit():
+            inputtext = form.inputtext.data
+            textout = inputtext
+            misspelled = "test"
+            return render_template('spellcheck2.html', form=form, textout=textout, misspelled=misspelled)
+
+
         outcome = 'success'
         return render_template('spellcheck2.html', form=form, outcome=outcome)
 
