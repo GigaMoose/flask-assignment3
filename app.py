@@ -63,17 +63,17 @@ def login():
         if user:
             if check_password_hash(user.password, form.pword.data):
                 if (int((user.phone)) != form.phone.data):
-                    outcome = "Two-factor failure"
+                    outcome = 'Two-factor failure'
                     return render_template('login.html', form=form, outcome=outcome)
                 elif (int((user.phone)) == form.phone.data):
-                    outcome = "success"
-                    return render_template('login.html', form=form, outcome=outcome)
+                    outcome = 'success'
                     login_user(user)
+                    return render_template('login.html', form=form, outcome=outcome)
             else:
-                outcome = "incorrect password"
+                outcome = 'incorrect password'
                 return render_template('login.html', form=form, outcome=outcome)
         if not user:
-            outcome = "incorrect user"
+            outcome = 'incorrect user'
             return render_template('login.html', form=form, outcome=outcome)
 
         #return '<h1>Invalid username or password or phone</h1>'
