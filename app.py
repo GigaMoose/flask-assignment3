@@ -5,7 +5,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, IntegerField, TextAreaFields
+from wtforms import StringField, PasswordField, IntegerField, TextAreaField
 from wtforms.validators import InputRequired, Email, Length, Optional, NumberRange
 from flask_sqlalchemy  import SQLAlchemy
 from sqlalchemy import exc
@@ -45,9 +45,9 @@ class RegisterForm(FlaskForm):
     phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
 
 class SpellcheckForm(FlaskForm):
-    inputtext = TextAreaFields('Input Text', validators=[InputRequired()], id='inputtext')
-    textout = TextAreaFields('Output Text', id='textout')
-    misspelled = TextAreaFields('Misspelled Text', id='misspelled')
+    inputtext = TextAreaField('Input Text', validators=[InputRequired()], id='inputtext')
+    textout = TextAreaField('Output Text', id='textout')
+    misspelled = TextAreaField('Misspelled Text', id='misspelled')
 
 @app.route('/')
 def index():
@@ -110,11 +110,11 @@ def register():
 @app.route('/spell_check', methods=['GET', 'POST'])
 @login_required
 def spell_check():
-    #if current_user.is_authenticated:
+    if current_user.is_authenticated:
+        form = SpellcheckForm()
 
-    form = SpellcheckForm()
-    outcome = 'success'
-    return render_template('spellcheck2.html', name=current_user.username, outcome=outcome)
+        outcome = 'success'
+        return render_template('spellcheck2.html', form=form, outcome=outcome)
 
 @app.route('/logout')
 #@login_required
