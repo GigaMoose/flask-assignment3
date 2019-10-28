@@ -56,6 +56,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    #form = FlaskForm(csrf_enabled=False)
     outcome = ''
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.uname.data).first()
@@ -87,6 +88,7 @@ def register():
         return redirect(url_for('spell_check'))
 
     form = RegisterForm()
+    #form = FlaskForm(csrf_enabled=False)
 
     if form.validate_on_submit():
         try:
@@ -112,6 +114,7 @@ def register():
 def spell_check():
     if current_user.is_authenticated:
         form = SpellcheckForm()
+        #form = FlaskForm(csrf_enabled=False)
 
         if form.validate_on_submit():
             inputtext = form.inputtext.data
