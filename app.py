@@ -45,7 +45,7 @@ class RegisterForm(FlaskForm):
     phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
 
 class SpellcheckForm(FlaskForm):
-    inputtext = TextAreaField('Input Text', validators=[InputRequired()], id='inputtext')
+    inputtext = TextAreaField('Input Text', id='inputtext')
     textout = TextAreaField('Output Text', id='textout')
     misspelled = TextAreaField('Misspelled Text', id='misspelled')
 
