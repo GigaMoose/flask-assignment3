@@ -157,7 +157,7 @@ def spell_check():
                 #textout = inputtext
                 #misspelledwords = runspellcheck.replace('\n',', ')[:-1]
                 misspelledwords = runspellcheck.replace("\n", ", ").strip().strip(',')
-                return render_template('spellcheck2.html', form=form, textout=inputtext, misspelledwords=misspelledwords)
+                return render_template('spellcheck2.html', form=form, textout=inputtext, badwords=misspelledwords)
 
 
         outcome = 'success'
