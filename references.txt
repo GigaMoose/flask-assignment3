@@ -1,0 +1,17 @@
+https://code.visualstudio.com/docs/python/tutorial-flask
+https://www.tutorialspoint.com/sqlite/sqlite_select_query.htm
+https://sqlite.org/cli.html
+https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
+https://github.com/yaoelvon/flask-sqlalchemy-datetime-example/blob/master/sqlalchemy_datetime.py
+https://hackersandslackers.com/flask-sqlalchemy-database-models/
+https://blog.openshift.com/use-flask-login-to-add-user-authentication-to-your-python-application/
+https://flask-login.readthedocs.io/en/latest/
+
+https://gist.github.com/ngse/c20058116b8044c65d3fbceda3fdf423
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
+https://stackoverflow.com/questions/10201648/sqlalchemy-wont-accept-datetime-datetime-now-value-in-a-datetime-column
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xii-dates-and-times
+
+https://www.nyayapati.com/srao/2015/04/where-is-the-sqlite-file-for-my-flask-app/
+https://www.pluralsight.com/guides/running-shell-commands-with-flask
+https://stackoverflow.com/questions/17413254/flask-to-write-data-into-file

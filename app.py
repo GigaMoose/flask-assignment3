@@ -11,13 +11,20 @@ from flask_sqlalchemy  import SQLAlchemy
 from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from datetime import datetime
 import phonenumbers
+import os
+import subprocess
 
 
+#basedir = os.path.abspath(os.path.dirname(__file__))
+#basedir = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'X3ZQRvCbYeQx4rAVhKkb'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///assignment2db.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] =\
+#    'sqlite:////' + os.path.join(basedir, 'assignment2db.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -25,10 +32,25 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
     password = db.Column(db.String(80))
     phone = db.Column(db.String(11))
+
+class Queries(db.Model):
+    __tablename__ = 'queries'
+    QueryID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(15))
+    QueryText = db.Column(db.String(5000))
+    QueryResult = db.Column(db.String(5000))
+
+class AuditLogs(db.Model):
+    __tablename__ = 'auditlogs'
+    AuditID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(15))
+    LogInTime = db.Column(db.DateTime)
+    LogOutTime = db.Column(db.DateTime, nullable=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -69,6 +91,10 @@ def login():
                 elif (int((user.phone)) == form.phone.data):
                     outcome = 'success'
                     login_user(user)
+                    datetimestamp = datetime.now()
+                    loginaudits = AuditLogs(username=user.username, LogInTime=datetimestamp)
+                    db.session.add(loginaudits)
+                    db.session.commit()
                     return render_template('login.html', form=form, outcome=outcome)
             else:
                 outcome = 'incorrect password'
@@ -109,6 +135,12 @@ def register():
     
     return render_template('register.html', form=form)
 
+
+##### test
+#def check_words(filename):
+#    stdout = check_output(['./a.out',filename, 'wordlist.txt']).decode('utf-8').replace('\n',', ')[:-2]
+#    return stdout
+
 @app.route('/spell_check', methods=['GET', 'POST'])
 @login_required
 def spell_check():
@@ -118,9 +150,13 @@ def spell_check():
 
         if form.validate_on_submit():
             inputtext = form.inputtext.data
-            textout = inputtext
-            misspelled = "test"
-            return render_template('spellcheck2.html', form=form, textout=textout, misspelled=misspelled)
+            with open("test.txt", "w") as testfile:
+                testfile.write(str(inputtext))
+                #testfile.close
+                runspellcheck = subprocess.check_output(['./a.out','./test.txt', './wordlist.txt']).decode('utf-8').replace('\n',', ')[:-2]
+                #textout = inputtext
+                misspelled = runspellcheck
+                return render_template('spellcheck2.html', form=form, textout=inputtext, misspelled=misspelled)
 
 
         outcome = 'success'
