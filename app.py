@@ -153,15 +153,15 @@ def spell_check():
             inputtext = form.inputtext.data
             with open("test.txt", "w") as testfile:
                 testfile.write(str(inputtext))
-                #testfile.close
-                runspellcheck = subprocess.check_output(['./a.out','./test.txt', './wordlist.txt']).decode('utf-8')
+                testfile.close
+            runspellcheck = subprocess.check_output(['./a.out','./test.txt', './wordlist.txt']).decode('utf-8')
                 #textout = inputtext
                 #misspelledwords = runspellcheck.replace('\n',', ')[:-1]
-                misspelledwords = runspellcheck.replace("\n", ", ").strip().strip(',')
-                print('Hello world!', file=sys.stderr)
-                print(misspelledwords, file=sys.stderr)
-                print(runspellcheck, file=sys.stderr)
-                return render_template('spellcheck2.html', form=form, textout=inputtext, badwords=misspelledwords)
+            misspelledwords = runspellcheck.replace("\n", ", ").strip().strip(',')
+            print('Hello world!', file=sys.stderr)
+            print(misspelledwords, file=sys.stderr)
+            print(runspellcheck, file=sys.stderr)
+            return render_template('spellcheck2.html', form=form, textout=inputtext, badwords=misspelledwords)
 
 
         outcome = 'success'
