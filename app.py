@@ -160,6 +160,7 @@ def spell_check():
                 misspelledwords = runspellcheck.replace("\n", ", ").strip().strip(',')
                 print('Hello world!', file=sys.stderr)
                 print(misspelledwords, file=sys.stderr)
+                print(runspellcheck, file=sys.stderr)
                 return render_template('spellcheck2.html', form=form, textout=inputtext, badwords=misspelledwords)
 
 
