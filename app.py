@@ -166,12 +166,6 @@ def spell_check():
             db.session.commit()
             return render_template('spellcheck2.html', form=form, textout=inputtext, badwords=misspelledwords)
 
-
-    QueryID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(15))
-    QueryText = db.Column(db.String(5000))
-    QueryResult = db.Column(db.String(5000))
-
         outcome = 'success'
         return render_template('spellcheck2.html', form=form, outcome=outcome)
 
