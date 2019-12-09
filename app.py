@@ -158,11 +158,19 @@ def spell_check():
                 #textout = inputtext
                 #misspelledwords = runspellcheck.replace('\n',', ')[:-1]
             misspelledwords = runspellcheck.replace("\n", ", ").strip().strip(',')
-            print('Hello world!', file=sys.stderr)
-            print(misspelledwords, file=sys.stderr)
-            print(runspellcheck, file=sys.stderr)
+            #print('Hello world!', file=sys.stderr)
+            #print(misspelledwords, file=sys.stderr)
+            #print(runspellcheck, file=sys.stderr)
+            queryhistory = Queries(username=user.username, QueryText=inputtext, QueryResult=misspelledwords)
+            db.session.add(queryhistory)
+            db.session.commit()
             return render_template('spellcheck2.html', form=form, textout=inputtext, badwords=misspelledwords)
 
+
+    QueryID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(15))
+    QueryText = db.Column(db.String(5000))
+    QueryResult = db.Column(db.String(5000))
 
         outcome = 'success'
         return render_template('spellcheck2.html', form=form, outcome=outcome)
