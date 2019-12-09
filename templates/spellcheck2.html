@@ -19,8 +19,13 @@ Spellcheck
         <h2 class="form-spellcheck-heading">Please enter your input</h2>
         {{ form.hidden_tag() }}
         {{ form.inputtext(size=9999) }}
-        {{ wtf.form_field(form.textout) }}
-        {{ wtf.form_field(form.misspelled) }}
+        <!--{{ wtf.form_field(form.textout) }}
+        {{ wtf.form_field(form.misspelled) }} -->
+        <h2 class="form-spellcheck-heading">Output Text</h2>
+          <p id="textout">{{ textout }}</p>
+                
+        <h2 class="form-spellcheck-heading">Misspelled Words</h2>
+                <p id="misspelled">{{ misspelled }}</p>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Compute</button>
         {% if outcome %}
           <p id='result'>{{ outcome }}</p>
