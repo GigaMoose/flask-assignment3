@@ -35,21 +35,21 @@ login_manager.login_view = 'login'
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(15), unique=True)
+    username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80))
     phone = db.Column(db.String(11))
 
 class Queries(db.Model):
     __tablename__ = 'queries'
     QueryID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(15))
+    username = db.Column(db.String(80))
     QueryText = db.Column(db.String(5000))
     QueryResult = db.Column(db.String(5000))
 
 class AuditLogs(db.Model):
     __tablename__ = 'auditlogs'
     AuditID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(15))
+    username = db.Column(db.String(80))
     LogInTime = db.Column(db.DateTime)
     LogOutTime = db.Column(db.DateTime, nullable=True)
 
