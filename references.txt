@@ -15,3 +15,5 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xii-dates-and-
 https://www.nyayapati.com/srao/2015/04/where-is-the-sqlite-file-for-my-flask-app/
 https://www.pluralsight.com/guides/running-shell-commands-with-flask
 https://stackoverflow.com/questions/17413254/flask-to-write-data-into-file
+https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
+

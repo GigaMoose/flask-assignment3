@@ -1,0 +1,26 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+History
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='spellcheck.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<p>History</p>
+    <div class="container">
+
+
+        <h2>Number of Queries:<p id="numqueries">{{ querycount }}</p></h2>
+        {% for i in queryid %}
+        <p><a class="query_link" id="query{{ i.QueryID}}" href="/history/query{{ i.QueryID}}">Query {{ i.QueryID }}</a> --- By: {{ i.username}}</p>
+    {% endfor %}
+
+     
+    </div> <!-- /container -->
+{% endblock %}

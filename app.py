@@ -137,11 +137,6 @@ def register():
     return render_template('register.html', form=form)
 
 
-##### test
-#def check_words(filename):
-#    stdout = check_output(['./a.out',filename, 'wordlist.txt']).decode('utf-8').replace('\n',', ')[:-2]
-#    return stdout
-
 @app.route('/spell_check', methods=['GET', 'POST'])
 @login_required
 def spell_check():
@@ -155,8 +150,6 @@ def spell_check():
                 testfile.write(str(inputtext))
                 testfile.close
             runspellcheck = subprocess.check_output(['./a.out','./test.txt', './wordlist.txt']).decode('utf-8')
-                #textout = inputtext
-                #misspelledwords = runspellcheck.replace('\n',', ')[:-1]
             misspelledwords = runspellcheck.replace("\n", ", ").strip().strip(',')
             #print('Hello world!', file=sys.stderr)
             #print(misspelledwords, file=sys.stderr)
@@ -169,6 +162,20 @@ def spell_check():
 
         outcome = 'success'
         return render_template('spellcheck2.html', form=form, outcome=outcome)
+
+@app.route('/history', methods=['GET'])
+@login_required
+def history():
+    if current_user.is_authenticated:
+        if current_user.username == 'admin':
+            fullhistory = Queries.query.all()
+        else:
+            fullhistory = Queries.query.filter_by(username=current_user.username)
+        
+        querycount = len(fullhistory)
+        
+        return render_template('history.html', queryid=fullhistory, querycount=querycount)
+        
 
 @app.route('/logout')
 #@login_required
