@@ -18,7 +18,7 @@ History
 
         <h2>Number of Queries:<p id="numqueries">{{ querycount }}</p></h2>
         {% for i in queryid %}
-        <p><a class="query_link" id="query{{ i.QueryID}}" href="/history/query{{ i.QueryID}}">Query {{ i.QueryID }}</a> --- By: {{ i.username}}</p>
+        <p><a id="query{{ i.QueryID}}" href="/history/query{{ i.QueryID}}">Query {{ i.QueryID }}</a> --- By: {{ i.username}}</p>
     {% endfor %}
 
      
