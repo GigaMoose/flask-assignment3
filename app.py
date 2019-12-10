@@ -86,10 +86,19 @@ def login():
         #login_user(user)
         if user:
             if check_password_hash(user.password, form.pword.data):
-                if (int((user.phone)) != form.phone.data):
-                    outcome = 'Two-factor failure'
-                    return render_template('login.html', form=form, outcome=outcome)
-                elif (int((user.phone)) == form.phone.data):
+                if (user.phone) is not None:
+                    if (int((user.phone)) != form.phone.data):
+                        outcome = 'Two-factor failure'
+                        return render_template('login.html', form=form, outcome=outcome)
+                    elif (int((user.phone)) == form.phone.data):
+                        outcome = 'success'
+                        login_user(user)
+                        datetimestamp = datetime.now()
+                        loginaudits = AuditLogs(username=user.username, LogInTime=datetimestamp)
+                        db.session.add(loginaudits)
+                        db.session.commit()
+                        return render_template('login.html', form=form, outcome=outcome)
+                else:
                     outcome = 'success'
                     login_user(user)
                     datetimestamp = datetime.now()
@@ -172,7 +181,7 @@ def history():
         else:
             fullhistory = Queries.query.filter_by(username=current_user.username)
         
-        querycount = len(fullhistory)
+        querycount = Queries.query.filter_by(username=current_user.username).count()
         
         return render_template('history.html', queryid=fullhistory, querycount=querycount)
         

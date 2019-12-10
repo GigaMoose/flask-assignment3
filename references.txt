@@ -17,3 +17,5 @@ https://www.pluralsight.com/guides/running-shell-commands-with-flask
 https://stackoverflow.com/questions/17413254/flask-to-write-data-into-file
 https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
 
+https://stackoverflow.com/questions/25605410/count-the-number-of-rows-with-a-condition-with-sqlalchemy/25606445
+
