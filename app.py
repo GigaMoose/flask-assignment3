@@ -176,6 +176,16 @@ def history():
         
         return render_template('history.html', queryid=fullhistory, querycount=querycount)
         
+@app.route('/history/query<id>', methods=['GET'])
+@login_required
+def queryreview(id):
+    if current_user.is_authenticated:
+        if current_user.username == 'admin':
+            queryreview = Queries.query.filter_by(QueryID = id).first()
+        else:
+            queryreview = Queries.query.filter_by(QueryID = id, username=current_user.username).first()
+    
+        return render_template('queryreview.html', queryreview=queryreview)
 
 @app.route('/logout')
 #@login_required
