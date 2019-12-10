@@ -95,10 +95,10 @@ def login():
         if user:
             if check_password_hash(user.password, form.pword.data):
                 if (user.phone) is not None:
-                    if (int((user.phone)) != form.phone.data):
+                    if ((user.phone) != form.phone.data):
                         outcome = 'Two-factor failure'
                         return render_template('login.html', form=form, outcome=outcome)
-                    elif (int((user.phone)) == form.phone.data):
+                    elif ((user.phone) == form.phone.data):
                         outcome = 'success'
                         login_user(user)
                         datetimestamp = datetime.now()
