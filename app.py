@@ -58,14 +58,16 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class LoginForm(FlaskForm):
-    uname = StringField('username', validators=[InputRequired(),Length(min=4, max=15)])
-    pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
+    uname = StringField('username', validators=[InputRequired()])
+    pword = PasswordField('password', validators=[InputRequired()])
+    #phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
+    phone = IntegerField('phone', validators=[Optional(), id='2fa')
 
 class RegisterForm(FlaskForm):
-    uname = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    pword = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
+    uname = StringField('username', validators=[InputRequired()])
+    pword = PasswordField('password', validators=[InputRequired()])
+    #phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
+    phone = IntegerField('phone', validators=[Optional(), id='2fa')
 
 class SpellcheckForm(FlaskForm):
     inputtext = TextAreaField('Input Text', id='inputtext')
