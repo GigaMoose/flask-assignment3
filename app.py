@@ -6,7 +6,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, IntegerField, TextAreaField
-from wtforms.validators import InputRequired, Email, Length, Optional, NumberRange
+from wtforms.validators import InputRequired, Email, Length, Optional, NumberRange, Regexp
 from flask_sqlalchemy  import SQLAlchemy
 from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
