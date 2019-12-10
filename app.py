@@ -58,14 +58,14 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class LoginForm(FlaskForm):
-    uname = StringField('username', validators=[InputRequired()])
-    pword = PasswordField('password', validators=[InputRequired()])
+    uname = StringField('username', validators=[InputRequired(), Regexp(r'^[A-Za-z0-9_]+$/')])
+    pword = PasswordField('password', validators=[InputRequired(), Regexp(r'^[A-Za-z0-9_]+$/')])
     #phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
     phone = IntegerField('phone', validators=[Optional()], id='2fa')
 
 class RegisterForm(FlaskForm):
-    uname = StringField('username', validators=[InputRequired()])
-    pword = PasswordField('password', validators=[InputRequired()])
+    uname = StringField('username', validators=[InputRequired(), Regexp(r'^[A-Za-z0-9_]+$/')])
+    pword = PasswordField('password', validators=[InputRequired(), Regexp(r'^[A-Za-z0-9_]+$/')])
     #phone = IntegerField('phone', validators=[Optional(), NumberRange(min=10000000000,max=99999999999)], id='2fa')
     phone = IntegerField('phone', validators=[Optional()], id='2fa')
 
